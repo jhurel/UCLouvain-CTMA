@@ -1,0 +1,10 @@
+name: Bacterio_R
+channels:
+  - defaults
+  - conda-forge
+  - bioconda
+dependencies:
+  - bioconductor-summarizedexperiment
+  - bioconductor-variantexperiment
+  - bioconductor-variantannotation
+  - bioconductor-seqarray
