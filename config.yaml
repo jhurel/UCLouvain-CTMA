@@ -1,14 +1,20 @@
 #Important note : All paths definded in this configuration file must be either absolute or relative to the location of the Snakefile
 
-
 ## Path to existing reference file
 reference_genome: 00-reference-genome/nCoV-2019.reference.fasta
 
 ## Path to existing metadata
-metadata : coldata.csv
+metadata : 00-metadata/coldata.csv
 
-## Sample name 
+## Sample names
 sample:
-    - SRR12881613_1
-    - SRR12881614_1
+    - SRR12881622_1
+    - SRR12881621_1
+    - SRR12881620_1
+    - SRR12881619_1
+    - SRR12881618_1
+    - SRR12881617_1
+    - SRR12881616_1
     - SRR12881615_1
+    - SRR12881614_1
+    - SRR12881613_1
