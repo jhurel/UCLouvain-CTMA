@@ -6,6 +6,6 @@ As part of the European project PANDEM 2, this pipeline is developped to analyse
 
 ## Params in config.yaml
 
-Reference genome file
-Metadata file 
-Sample names 
+- Reference genome file
+- Metadata file 
+- Sample names 
