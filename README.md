@@ -15,7 +15,7 @@ As part of the European project PANDEM-2, this pipeline is developped to analyse
 Git clone
 ```
 git clone https://github.com/jhurel/UCLouvain-CTMA.git
-cd DUGMO
+cd UCLouvain-CTMA
 ```
 Create a conda environnement 
 ```
