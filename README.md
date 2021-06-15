@@ -9,3 +9,20 @@ As part of the European project PANDEM-2, this pipeline is developped to analyse
 - Reference genome file
 - Metadata file 
 - Sample names 
+
+## Installation with conda 
+
+Git clone
+```
+git clone https://github.com/jhurel/UCLouvain-CTMA.git
+cd DUGMO
+```
+Create a conda environnement 
+```
+conda create -n PANDEM_NGS -c bioconda snakemake
+conda activate PANDEM_NGS
+```
+Launch the pipeline
+```
+snakemake --use-conda -rp
+```
