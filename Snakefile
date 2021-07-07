@@ -67,7 +67,7 @@ rule Freebayes :  #TIME CONSUMING !!!!
   shell: 
    "freebayes -f {params} --ploidy 1 {input} > 03-VCF-freebayes/variant.vcf"
 
-rule vcffilter: 
+rule Vcffilter: 
   input:
     rules.Freebayes.output
   output:
@@ -92,12 +92,12 @@ rule Vcf_format :
 
 rule CreateVEObj : 
   input:
-    rules.vcffilter.output,	
+    rules.Vcf_format.output,	
     config['metadata']
   output:
     "04-Variant-Experiment/sarscov2_ve.rds"
   conda: 
     "envs/Bacterio_R.yaml"
   script: 
-    "Scripts/CreateVariantExperimentObj.R"
+    "scripts/CreateVariantExperimentObj.R"
 
