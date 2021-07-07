@@ -8,13 +8,6 @@ metadata : 00-metadata/coldata.csv
 
 ## Sample names
 sample:
-    - SRR12881622_1
-    - SRR12881621_1
-    - SRR12881620_1
-    - SRR12881619_1
-    - SRR12881618_1
-    - SRR12881617_1
-    - SRR12881616_1
-    - SRR12881615_1
-    - SRR12881614_1
-    - SRR12881613_1
+    - SRR12881620_subseq
+    - SRR12881621_subseq
+    - SRR12881622_subseq
