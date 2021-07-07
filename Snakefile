@@ -16,7 +16,7 @@ rule Alignment_minimap2:
   output: 
     temp("02-mapping/{sample}.sam")
   conda: 
-    "envs/Snakemake_bacterio.yaml"
+    "envs/Minimap2.yaml"
   shell: 
     "minimap2 -ax map-ont {input[0]} {input[1]} > {output[0]}"
 
@@ -26,7 +26,7 @@ rule Convert_Sam_to_Bam:
   output:
     temp("02-mapping/{sample}.bam")
   conda: 
-    "envs/Snakemake_bacterio.yaml"
+    "envs/Samtools.yaml"
   shell:
     "samtools view -b {input[0]} -o {output[0]}"
 
@@ -36,7 +36,7 @@ rule Picardtools:
   output:
     temp("02-mapping/{sample}.RG.bam")
   conda: 
-    "envs/Snakemake_bacterio.yaml"
+    "envs/Samtools.yaml"
   shell: 
     "picard AddOrReplaceReadGroups I={input[0]} O={output[0]} RGID=ID{wildcards.sample} RGLB=lib{wildcards.sample} RGPL=illumina RGPU=unit1 RGSM={wildcards.sample}"
 
@@ -47,7 +47,7 @@ rule Sort_and_index_bamfile:
     "02-mapping/{sample}.sorted.bam",
     "02-mapping/{sample}.sorted.bam.bai"
   conda: 
-    "envs/Snakemake_bacterio.yaml"
+    "envs/Samtools.yaml"
   shell:"""
     samtools sort {input[0]} -o {output[0]}
     samtools index {output[0]}
@@ -63,7 +63,7 @@ rule Freebayes :  #TIME CONSUMING !!!!
   params: 
     config['reference_genome']
   conda: 
-    "envs/Snakemake_bacterio.yaml" 
+    "envs/Freebayes.yaml" 
   shell: 
    "freebayes -f {params} --ploidy 1 {input} > 03-VCF-freebayes/variant.vcf"
 
@@ -71,18 +71,28 @@ rule vcffilter:
   input:
     rules.Freebayes.output
   output:
+    "03-VCF-freebayes/variant2.vcf",
     "03-VCF-freebayes/variant.q20.vcf"
   conda: 
-    "envs/Snakemake_bacterio.yaml"    
-  shell: 
-   "biopet-vcffilter -I {input[0]} -o {output[0]} --minQualScore 20"
-
+    "envs/Vcffilter.yaml"    
+  shell: """
+    cat <(echo "##contig=<ID=MN908947.3,length=29903>") {input[0]} > {output[0]}
+    biopet-vcffilter -I {output[0]} -o {output[1]} --minQualScore 20
+"""
 ############################### VARIANT EXPERIMENT OBJECT #######################################
+
+rule Vcf_format :
+  input:
+    rules.Vcffilter.output[1]
+  output:
+    "03-VCF-freebayes/variant.q20.format.vcf"
+  shell: """
+    awk -F'\t' -vOFS='\t' '{{ gsub(",", ".", $6) ; print }}' {input[0]} > {output[0]}
+  """
 
 rule CreateVEObj : 
   input:
-    rules.vcffilter.output,
-    #"03-VCF-freebayes/variant.q20.point.vcf",	
+    rules.vcffilter.output,	
     config['metadata']
   output:
     "04-Variant-Experiment/sarscov2_ve.rds"
