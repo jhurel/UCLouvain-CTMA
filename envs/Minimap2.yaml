@@ -1,0 +1,6 @@
+name: Minimap2
+channels:
+  - bioconda
+  - defaults
+dependencies:
+  - minimap2=2.17

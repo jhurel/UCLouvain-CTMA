@@ -1,0 +1,6 @@
+name: Snakemake_bacterio
+channels:
+  - bioconda
+  - defaults
+dependencies:
+  - biopet-vcffilter=0.2
