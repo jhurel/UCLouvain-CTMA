@@ -1,4 +1,0 @@
-,Sample.ID,Date,Patient.ID,SRA.ID,Country,Age,Sex,Diabete,Vaccine,sequencing_technology
-1,ax1233121,20/05/2021,ID.BEL.0111223,SRR12881620_subseq,Belgium,52,F,no,yes,ONT_MinION
-2,ax1233122,15/06/2020,ID.BEL.0111224,SRR12881621_subseq,Belgium,36,F,no,no,ONT_MinION
-3,ax1233123,18/07/2020,ID.BEL.0111225,SRR12881622_subseq,Belgium,45,M,yes,yes,ONT_MinION
