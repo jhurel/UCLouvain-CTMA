@@ -3,8 +3,8 @@ configfile: "config.yaml"
 
 rule target:
   input:
-    expand("02-mapping/{sample}.sorted.bam.bai", sample=config["sample"]),
-    "04-Variant-Experiment/sarscov2_ve.rds"
+    expand("02_mapping/{sample}.sorted.bam.bai", sample=config["sample"]),
+    "04_Variant_Experiment/sarscov2_ve.rds"
     #"03-VCF-freebayes/variant.q20.vcf"
 
 ############################### MAPPING ##############################################
@@ -14,7 +14,7 @@ rule Alignment_minimap2:
     config['reference_genome'],
     "01-raw-data/{sample}.fastq"
   output: 
-    temp("02-mapping/{sample}.sam")
+    temp("02_mapping/{sample}.sam")
   conda: 
     "envs/Minimap2.yaml"
   shell: 
@@ -24,7 +24,7 @@ rule Convert_Sam_to_Bam:
   input: 
     rules.Alignment_minimap2.output
   output:
-    temp("02-mapping/{sample}.bam")
+    temp("02_mapping/{sample}.bam")
   conda: 
     "envs/Samtools.yaml"
   shell:
@@ -34,7 +34,7 @@ rule Picardtools:
   input: 
     rules.Convert_Sam_to_Bam.output
   output:
-    temp("02-mapping/{sample}.RG.bam")
+    temp("02_mapping/{sample}.RG.bam")
   conda: 
     "envs/Samtools.yaml"
   shell: 
@@ -44,8 +44,8 @@ rule Sort_and_index_bamfile:
   input:
     rules.Picardtools.output
   output:
-    "02-mapping/{sample}.sorted.bam",
-    "02-mapping/{sample}.sorted.bam.bai"
+    "02_mapping/{sample}.sorted.bam",
+    "02_mapping/{sample}.sorted.bam.bai"
   conda: 
     "envs/Samtools.yaml"
   shell:"""
@@ -57,22 +57,22 @@ rule Sort_and_index_bamfile:
 
 rule Freebayes :  #TIME CONSUMING !!!!
   input:
-    expand("02-mapping/{samples}.sorted.bam", samples=config["sample"])
+    expand("02_mapping/{samples}.sorted.bam", samples=config["sample"])
   output:
-    "03-VCF-freebayes/variant.vcf"
+    "03_VCF_freebayes/variant.vcf"
   params: 
     config['reference_genome']
   conda: 
     "envs/Freebayes.yaml" 
   shell: 
-   "freebayes -f {params} --ploidy 1 {input} > 03-VCF-freebayes/variant.vcf"
+   "freebayes -f {params} --ploidy 1 {input} > 03_VCF_freebayes/variant.vcf"
 
 rule Vcffilter: 
   input:
     rules.Freebayes.output
   output:
-    "03-VCF-freebayes/variant2.vcf",
-    "03-VCF-freebayes/variant.q20.vcf"
+    "03_VCF_freebayes/variant2.vcf",
+    "03_VCF_freebayes/variant.q20.vcf"
   conda: 
     "envs/Vcffilter.yaml"    
   shell: """
@@ -85,7 +85,7 @@ rule Vcf_format :
   input:
     rules.Vcffilter.output[1]
   output:
-    "03-VCF-freebayes/variant.q20.format.vcf"
+    "03_VCF_freebayes/variant.q20.format.vcf"
   shell: """
     awk -F'\t' -vOFS='\t' '{{ gsub(",", ".", $6) ; print }}' {input[0]} > {output[0]}
   """
@@ -95,7 +95,7 @@ rule CreateVEObj :
     rules.Vcf_format.output,	
     config['metadata']
   output:
-    "04-Variant-Experiment/sarscov2_ve.rds"
+    "04_Variant_Experiment/sarscov2_ve.rds"
   conda: 
     "envs/Bacterio_R.yaml"
   script: 
