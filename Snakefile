@@ -12,7 +12,7 @@ rule target:
 rule Alignment_minimap2:
   input: 
     config['reference_genome'],
-    "01-raw-data/{sample}.fastq"
+    "01_raw_data/{sample}.fastq"
   output: 
     temp("02_mapping/{sample}.sam")
   conda: 
