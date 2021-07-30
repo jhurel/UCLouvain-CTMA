@@ -1,6 +1,6 @@
 name: Minimap2
 channels:
   - bioconda
-  - defaults
+  - conda-forge
 dependencies:
   - minimap2=2.17
