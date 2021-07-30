@@ -4,7 +4,7 @@
 reference_genome: input/reference_genome/nCoV-2019.reference.fasta
 
 ## Path to existing folder with fastq files
-input_folder : input/raw_data/
+input_folder : input/01_raw_data/
 extension : fastq
 
 ## Path to existing metadata file
