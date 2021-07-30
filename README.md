@@ -17,12 +17,13 @@ Git clone
 git clone https://github.com/jhurel/UCLouvain-CTMA.git
 cd UCLouvain-CTMA
 ```
-Create a conda environnement 
+Create a conda/mamba environnement 
 ```
-conda create -n PANDEM_NGS -c bioconda snakemake
+conda install -n base -c conda-forge mamba
+mamba create -c conda-forge -c bioconda -n PANDEM_NGS snakemake=6.6.1
 conda activate PANDEM_NGS
 ```
 Launch the pipeline
 ```
-snakemake --use-conda -rp
+snakemake --cores all --use-conda -rp
 ```
