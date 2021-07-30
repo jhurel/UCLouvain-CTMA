@@ -1,8 +1,6 @@
 name: Samtools
 channels:
   - bioconda
-  - defaults
+  - conda-forge
 dependencies:
   - samtools=1.9
-  - picard=2.25.5
-  - minimap2=2.17
