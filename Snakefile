@@ -11,8 +11,7 @@ Samples, = glob_wildcards(inputdir + "{sample}." + config["extension"])
 
 rule target:
   input:
-    expand(outputdir + os.path.join("04_Consensus_Sequence", "{sample}_consensus.fa"), sample=Samples),
-    os.path.join(outputdir, "05_Variant_Experiment", "variant.all.filt.vcf")
+    expand(outputdir + "04_Consensus_Sequence/{samples}.consensus.fa", samples=Samples),
     os.path.join(outputdir, "05_Variant_Experiment", "sarscov2_ve.rds")
   
 ############################### MAPPING ##############################################
