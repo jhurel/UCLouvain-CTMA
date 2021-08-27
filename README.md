@@ -2,15 +2,16 @@
 
 ## Introduction
 
-As part of the European project PANDEM-2, this pipeline is developped to analyse SARS-CoV-2 genomic data (from the SRA database) and its associated metadata. The steps performed are the mapping, the transformation of the SAM files, the variants calling and the creation of an experiment variant object. The output file is in .rds format.
+As part of the European project PANDEM-2, this pipeline is developped to analyse SARS-CoV-2 genomic data (from the SRA database) and its associated metadata. The steps performed are the mapping, the transformation of the SAM files, the variants calling, the consensus sequences and the creation of an experiment variant object. The output file is in .rds format.
 
 ## Params in config.yaml
 
 - Reference genome file
-- Metadata file 
-- Sample names 
+- Metadata file
+- Genomic input data path with extension format
+- Results path 
 
-## Installation with conda 
+## Installation with mamba/conda 
 
 Git clone
 ```
@@ -19,11 +20,11 @@ cd UCLouvain-CTMA
 ```
 Create a conda/mamba environnement 
 ```
-conda install -n base -c conda-forge mamba
-mamba create -c conda-forge -c bioconda -n PANDEM_NGS snakemake=6.6.1
-conda activate PANDEM_NGS
+conda env remove -n PANDEM2_env
+mamba env create --file workflow/envs/PANDEM2_env.yml
+conda activate PANDEM2_env
 ```
 Launch the pipeline
 ```
-snakemake --cores all --use-conda -rp
+snakemake --cores all -rp
 ```
