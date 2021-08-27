@@ -5,8 +5,6 @@ rule Combine_vcfFiles:
     temp(os.path.join(outputdir, "05_Variant_Experiment", "variant1.all.filt.vcf")),
     temp(os.path.join(outputdir, "05_Variant_Experiment", "sample_names.txt")),
     os.path.join(outputdir, "05_Variant_Experiment", "variant.all.filt.vcf")
-  conda: 
-    "../envs/Bcftools.yaml" 
   shell:"""
     bcftools merge --force-sample {input} > {output[0]}
     printf '%s\n' {Samples} > {output[1]}
