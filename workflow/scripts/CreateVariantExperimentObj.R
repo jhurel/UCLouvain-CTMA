@@ -1,4 +1,4 @@
-CreateVariantExperimentObj <- function(variant, coldata, VEObj) {
+CreateVariantExperimentObj <- function(variant, coldata, VEObj, gdsFile) {
 
 #Packages
 library(SummarizedExperiment)
@@ -8,13 +8,14 @@ library(SeqArray)
 
 #Creation of the object based on a vcf file
 vcf.header <- seqVCF_Header(variant)
-seqVCF2GDS(vcf.fn = variant, out.fn = '04-Variant-Experiment/sarscov2.gds', info.import = c('GT','DP'))
-sarscov2_ve <- makeVariantExperimentFromGDS('04-Variant-Experiment/sarscov2.gds')
+seqVCF2GDS(vcf.fn = variant, out.fn = gdsFile, info.import = c('GT','DP')) #05_Variant_Experiment/
+sarscov2_ve <- makeVariantExperimentFromGDS(gdsFile)
 assayNames(sarscov2_ve) <- c('genotype','DP')
 
 #Sample annotations/metadata (aka colData)
 col_data <- DataFrame(read.csv(coldata))
-rownames(col_data) <- col_data$Sample.ID
+#rownames(col_data) <- col_data$Sample.ID
+rownames(col_data) <- col_data$SRA.ID
 col_data <- col_data[match(colnames(sarscov2_ve), col_data$SRA.ID), ]
 stopifnot(identical(colnames(sarscov2_ve), col_data$SRA.ID))
 SummarizedExperiment::colData(sarscov2_ve) <- col_data
@@ -24,16 +25,15 @@ vcffile.fb <- readVcf(variant)
 SummarizedExperiment::rowRanges(sarscov2_ve) <- SummarizedExperiment::rowRanges(vcffile.fb)
 
 #Annotation of variants of interest/concern
-rowData(sarscov2_ve)$VOC1 <- rowData(sarscov2_ve)$VOC2 <- FALSE
-rowData(sarscov2_ve)$VOC1[c(7, 26)] <- TRUE
-rowData(sarscov2_ve)$VOC2[38] <- TRUE
-sarscov2_ve$has_VOC1 <- sarscov2_ve$has_VOC2 <- FALSE
-sarscov2_ve$has_VOC1[c(2, 6, 9)] <- TRUE
-sarscov2_ve$has_VOC2[c(3, 5, 8)] <- TRUE
+#rowData(sarscov2_ve)$VOC1 <- rowData(sarscov2_ve)$VOC2 <- FALSE
+#rowData(sarscov2_ve)$VOC1[c(7, 26)] <- TRUE
+#rowData(sarscov2_ve)$VOC2[38] <- TRUE
+#sarscov2_ve$has_VOC1 <- sarscov2_ve$has_VOC2 <- FALSE
+#sarscov2_ve$has_VOC1[c(2, 6, 9)] <- TRUE
+#sarscov2_ve$has_VOC2[c(3, 5, 8)] <- TRUE
 
 #Serialisation of the object
 saveRDS(sarscov2_ve, VEObj)
 
 }
-CreateVariantExperimentObj(snakemake@input[[1]], snakemake@input[[2]], snakemake@output[[1]])
-
+CreateVariantExperimentObj(snakemake@input[[1]], snakemake@input[[2]], snakemake@output[[1]], snakemake@output[[2]])
