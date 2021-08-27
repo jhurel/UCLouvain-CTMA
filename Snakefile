@@ -24,7 +24,7 @@ include : 'workflow/rules/Convert_sort_and_index_bamfile.smk'
 include : 'workflow/rules/Freebayes.smk'
 include : 'workflow/rules/Vcf_compress_filter.smk'
 
-############################### CONSENSUS #####################################   
+############################### CONSENSUS ############################################
 
 include : 'workflow/rules/Consensus_seq.smk'
 
