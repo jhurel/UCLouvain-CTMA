@@ -12,6 +12,8 @@ test
 - Metadata file
 - Genomic input data path with extension format
 - Results path
+- test
+
 
 ## Installation with mamba/conda
 
